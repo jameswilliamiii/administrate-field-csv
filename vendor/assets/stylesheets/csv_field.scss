@@ -1,0 +1,29 @@
+.attribute-data--csv {
+  max-width: 100%;
+  max-height: 350px;
+  overflow: scroll;
+  word-break: normal;
+}
+
+table.csvtable {
+  width: 100%;
+
+  thead {
+    border-collapse: separate;
+
+    tr {
+      position: sticky;
+      top: 0;
+      border: none;
+
+      th {
+        background-color: #f6f7f7;
+        white-space: nowrap;
+        padding-top: 0.7rem;
+        box-shadow: inset 0 1px 0 #dfe0e1, inset 0 -1px 0 #dfe0e1;
+      }
+
+    }
+  }
+
+}

@@ -1,0 +1,27 @@
+<% if field.transform %>
+  <table class="csvtable">
+
+    <% if field.headers.any? %>
+      <thead>
+        <tr>
+          <% field.headers.each do |header| %>
+            <th class="cell-label"><%= header %></th>
+          <% end %>
+        </tr>
+      </thead>
+    <% end %>
+
+    <tbody>
+      <% field.rewind.each do |row| %>
+        <tr>
+          <% row.each do |k,v| %>
+            <td class="cell-data cell-data--string"><%= v %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% else %>
+  <%= field.blank_sign %>
+<% end %>
