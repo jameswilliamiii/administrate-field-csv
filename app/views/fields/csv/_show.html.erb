@@ -1,6 +1,5 @@
 <% if field.transform %>
   <table class="csvtable">
-
     <% if field.headers.any? %>
       <thead>
         <tr>
@@ -12,10 +11,16 @@
     <% end %>
 
     <tbody>
-      <% field.rewind.each do |row| %>
+      <% field.transform.each do |row| %>
         <tr>
           <% row.each do |k,v| %>
-            <td class="cell-data cell-data--string"><%= v %></td>
+            <td class="cell-data cell-data--string">
+              <% if field.has_headers? %>
+                <%= v %>
+              <% else %>
+                <%= k %>
+              <% end %>
+            </td>
           <% end %>
         </tr>
       <% end %>
