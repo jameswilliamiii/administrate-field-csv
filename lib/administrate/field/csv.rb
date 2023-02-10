@@ -1,28 +1,29 @@
 require 'rails'
 require 'administrate/engine'
 require 'administrate/field/text'
-# require 'administrate/field/text'
 require 'csv'
 
 module Administrate
   module Field
-    class CSV < Administrate::Field::Text
+    class CSV < Administrate::Field::Base
 
       def transform
         return nil if data.blank?
 
-        @transform ||= ::CSV.new(data, headers: has_headers?)
+        @transform ||= ::CSV.new(data, **csv_args)
       end
 
       def rewind
-        @transform.rewind
-        @transform
+        return nil if data.blank?
+
+        transform.rewind
       end
 
       def headers
-        return [] unless has_headers? && transform
+        return [] unless has_headers?
 
-        transform.first&.headers || []
+        rewind
+        @headers ||= transform.first&.headers || []
       end
 
       def has_headers?
@@ -35,6 +36,21 @@ module Administrate
 
       def blank_sign
         options[:blank_sign] || '-'
+      end
+
+      def truncate
+        data.to_s.truncate(truncation_length)
+      end
+
+      private
+
+      def truncation_length
+        options.fetch(:truncate, 50)
+      end
+
+      def csv_args
+        args = %i[col_sep row_sep quote_char headers return_headers]
+        args.inject({}) { |res, arg| res.merge arg => options[arg] }.compact
       end
 
       class Engine < ::Rails::Engine
