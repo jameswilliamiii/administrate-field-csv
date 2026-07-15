@@ -7,6 +7,7 @@ This field uses truncated text for index views, and a text area for form views.
 
 - Administrate `>= 1.0`
 - Rails `>= 6.0` (including Rails 8)
+- Sprockets or Propshaft — the field ships plain CSS, so no SCSS compiler is required
 
 ## Installation
 

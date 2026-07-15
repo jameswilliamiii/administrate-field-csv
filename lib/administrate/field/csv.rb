@@ -53,11 +53,14 @@ module Administrate
         Administrate::Engine.add_stylesheet 'administrate-field-csv/application'
         isolate_namespace Administrate
 
-        # Administrate 1.0 bundles its own precompiled assets and no longer
-        # precompiles plugin stylesheets on our behalf, so the field's CSS
-        # must be registered explicitly or it 404s under an eager asset build.
+        # Sprockets only serves plugin assets it was told to precompile, so the
+        # field's stylesheet must be added to the allowlist or it 404s under an
+        # eager build. Propshaft serves everything on the asset path and keeps
+        # `precompile` only as a no-op array, so appending there is harmless; we
+        # still guard on Array so a host without an asset pipeline can't raise.
         initializer 'administrate-field-csv.assets.precompile' do |app|
-          app.config.assets.precompile += %w[administrate-field-csv/application.css]
+          precompile = app.config.assets.precompile
+          precompile << 'administrate-field-csv/application.css' if precompile.is_a?(Array)
         end
       end
 

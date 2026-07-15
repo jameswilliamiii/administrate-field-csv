@@ -55,6 +55,16 @@ class Administrate::Field::CSVTest < Minitest::Test
 
       assert_equal "fields/csv", csv_field.partial_prefixes.first
     end
+
+    it 'ships a partial under that prefix for every page it renders' do
+      prefix = Administrate::Field::CSV.new(:csv_text, "hello", :show).partial_prefixes.first
+      views = File.expand_path("../../../../app/views/#{prefix}", __dir__)
+
+      %i[show index form].each do |page|
+        assert File.exist?(File.join(views, "_#{page}.html.erb")),
+          "expected #{prefix}/_#{page}.html.erb to exist"
+      end
+    end
   end
 
   describe '#truncate' do
@@ -91,6 +101,27 @@ class Administrate::Field::CSVTest < Minitest::Test
     it 'uses blank_sign option' do
       csv_field = Administrate::Field::CSV.new(:csv_text, nil, :page, blank_sign: '--')
       assert_equal '--', csv_field.blank_sign
+    end
+  end
+
+  describe 'the registered stylesheet' do
+    stylesheet = File.expand_path(
+      "../../../../app/assets/stylesheets/administrate-field-csv/application.css", __dir__
+    )
+
+    it 'is shipped at the path Administrate links and precompiles' do
+      assert File.exist?(stylesheet), "expected #{stylesheet} to exist"
+    end
+
+    # Propshaft serves assets verbatim and never runs Sprockets manifest
+    # directives or an SCSS compiler, so the file must be plain, ready-to-serve
+    # CSS to load under both pipelines.
+    it 'is plain CSS with no Sprockets directives or SCSS syntax' do
+      css = File.read(stylesheet)
+
+      refute_match(/^\s*\*=\s*require/, css, "found a Sprockets directive")
+      refute_includes css, "$", "found SCSS variable syntax"
+      assert_includes css, ".attribute-data--csv"
     end
   end
 
