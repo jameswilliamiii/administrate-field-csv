@@ -49,12 +49,11 @@ class Administrate::Field::CSVTest < Minitest::Test
     end
   end
 
-  describe '#to_partial_path' do
-    it 'returns a partial based on the page being rendered' do
-      page = :show
-      csv_field = Administrate::Field::CSV.new(:csv_text, "hello", page)
+  describe '#partial_prefixes' do
+    it 'resolves the csv partials ahead of the inherited ones' do
+      csv_field = Administrate::Field::CSV.new(:csv_text, "hello", :show)
 
-      assert_equal "/fields/csv/#{page}", csv_field.to_partial_path
+      assert_equal "fields/csv", csv_field.partial_prefixes.first
     end
   end
 

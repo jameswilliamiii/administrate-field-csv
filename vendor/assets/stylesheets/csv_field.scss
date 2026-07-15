@@ -1,4 +1,10 @@
 .attribute-data--csv {
+  // Administrate 1.0 wraps each attribute group in a <fieldset>, whose UA-default
+  // `min-width: min-content` makes it grow to a wide CSV table's intrinsic width —
+  // which defeats the scroll container below (max-width: 100% then resolves against
+  // the blown-out fieldset). `contain: inline-size` keeps this cell's width tied to
+  // its container instead of its contents, so the overflow actually scrolls.
+  contain: inline-size;
   max-width: 100%;
   max-height: 350px;
   overflow: scroll;

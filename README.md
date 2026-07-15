@@ -3,6 +3,11 @@
 A custom [Administrate](https://github.com/thoughtbot/administrate) field to present Strings with CSV content in a table format on you show views.
 This field uses truncated text for index views, and a text area for form views.
 
+## Compatibility
+
+- Administrate `>= 1.0`
+- Rails `>= 6.0` (including Rails 8)
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -48,7 +53,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on Bitbucket at [https://bitbucket.org/eightbitdevelopers/administrate-field-csv](https://bitbucket.org/eightbitdevelopers/administrate-field-csv).
+Bug reports and pull requests are welcome on GitHub at [https://github.com/jameswilliamiii/administrate-field-csv](https://github.com/jameswilliamiii/administrate-field-csv).
 
 ## License
 

@@ -1,6 +1,6 @@
 require 'rails'
 require 'administrate/engine'
-require 'administrate/field/text'
+require 'administrate/field/base'
 require 'csv'
 
 module Administrate
@@ -30,10 +30,6 @@ module Administrate
         options[:headers] == true
       end
 
-      def to_partial_path(partial = page)
-        "/fields/csv/#{partial}"
-      end
-
       def blank_sign
         options[:blank_sign] || '-'
       end
@@ -55,8 +51,14 @@ module Administrate
 
       class Engine < ::Rails::Engine
         Administrate::Engine.add_stylesheet 'administrate-field-csv/application'
-        engine_root = root
         isolate_namespace Administrate
+
+        # Administrate 1.0 bundles its own precompiled assets and no longer
+        # precompiles plugin stylesheets on our behalf, so the field's CSS
+        # must be registered explicitly or it 404s under an eager asset build.
+        initializer 'administrate-field-csv.assets.precompile' do |app|
+          app.config.assets.precompile += %w[administrate-field-csv/application.css]
+        end
       end
 
     end
